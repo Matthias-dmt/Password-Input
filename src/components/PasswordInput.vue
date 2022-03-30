@@ -171,8 +171,7 @@ export default {
           );
         },
         isSame: (value) => {
-          let { value: passwordValue } = this.$attrs;
-          return value === passwordValue || "Passwords are not same.";
+          return value === this.innerPassword || "Passwords are not same.";
         },
       },
 
