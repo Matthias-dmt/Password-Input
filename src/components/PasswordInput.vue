@@ -1,81 +1,87 @@
 <template>
-  <v-form
-    :class="`pa-10 ${styles.container}`"
-    ref="form"
-    @submit.prevent="verifyPassword"
-  >
-    <!-- INPUT -->
-    <section :class="`${styles.inputs.container}`">
-      <v-text-field
-        :class="`mb-3 ${styles.inputs.passwordInput}`"
-        :value="innerPassword"
-        @input="updateValue($event)"
-        :rules="[inputRules.required, inputRules.minLength, inputRules.noSpace]"
-        :type="showPassword ? 'text' : 'password'"
-        clearable
-        dense
-        autocomplete
-        :label="inputLabels.passwordLabel"
-        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append="showPassword = !showPassword"
-      />
-      <v-text-field
-        v-model="passwordCopy"
-        :class="`mb-3 ${styles.inputs.repeatPasswordInput}`"
-        :label="inputLabels.repeatPasswordLabel"
-        :rules="[inputRules.required, inputRules.isSame]"
-        clearable
-        :type="showPassword ? 'text' : 'password'"
-        dense
-        autocomplete
-      />
-
-      <!-- PASSWORD STRENGHT -->
-      <div
-        v-if="passwordStrenght"
-        :class="`mb-6 ${styles.inputs.passwordStrenght.container}`"
-      >
-        <v-progress-linear
-          :value="passwordStrenght.progress"
-          :color="passwordStrenght.color"
-          height="7"
-          :class="`mb-2 ${styles.inputs.passwordStrenght.linearProgress}`"
+  <v-app>
+    <v-form
+      :class="`pa-10 ${styles.container}`"
+      ref="form"
+      @submit.prevent="verifyPassword"
+    >
+      <!-- INPUT -->
+      <section :class="`${styles.inputs.container}`">
+        <v-text-field
+          :class="`mb-3 ${styles.inputs.passwordInput}`"
+          :value="innerPassword"
+          @input="updateValue($event)"
+          :rules="[
+            inputRules.required,
+            inputRules.minLength,
+            inputRules.noSpace,
+          ]"
+          :type="showPassword ? 'text' : 'password'"
+          clearable
+          dense
+          autocomplete
+          :label="inputLabels.passwordLabel"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="showPassword = !showPassword"
         />
-        {{ passwordStrenght.text }}
-      </div>
-    </section>
+        <v-text-field
+          v-model="passwordCopy"
+          :class="`mb-3 ${styles.inputs.repeatPasswordInput}`"
+          :label="inputLabels.repeatPasswordLabel"
+          :rules="[inputRules.required, inputRules.isSame]"
+          clearable
+          :type="showPassword ? 'text' : 'password'"
+          dense
+          autocomplete
+        />
 
-    <!-- ACTION BUTTON -->
-    <section
-      :class="`d-flex justify-between align-center flex-wrap flex-md-nowrap ${styles.buttons.container}`"
-    >
-      <div :class="`mr-4 p-0 ${styles.buttons.saveButton}`">
-        <v-btn type="submit" elevation="2">Save Password</v-btn>
-      </div>
-      <div :class="`${styles.buttons.generateRandomButton}`">
-        <v-btn elevation="2" @click="generateRandomPassword">
-          Generate Random Password
-        </v-btn>
-      </div>
-    </section>
+        <!-- PASSWORD STRENGHT -->
+        <div
+          v-if="passwordStrenght"
+          :class="`mb-6 ${styles.inputs.passwordStrenght.container}`"
+        >
+          <v-progress-linear
+            :value="passwordStrenght.progress"
+            :color="passwordStrenght.color"
+            height="7"
+            :class="`mb-2 ${styles.inputs.passwordStrenght.linearProgress}`"
+          />
+          {{ passwordStrenght.text }}
+        </div>
+      </section>
 
-    <!-- SNACKBAR -->
-    <v-snackbar
-      v-if="snackBarInfos"
-      v-model="snackbar"
-      :color="snackBarInfos.status"
-      :class="`${snackbar}`"
-      shaped
-    >
-      {{ snackBarInfos.msg }}
+      <!-- ACTION BUTTON -->
+      <section
+        :class="`d-flex justify-between align-center flex-wrap flex-md-nowrap ${styles.buttons.container}`"
+      >
+        <div :class="`mr-4 p-0 ${styles.buttons.saveButton}`">
+          <v-btn type="submit" elevation="2">Save Password</v-btn>
+        </div>
+        <div :class="`${styles.buttons.generateRandomButton}`">
+          <v-btn elevation="2" @click="generateRandomPassword">
+            Generate Random Password
+          </v-btn>
+        </div>
+      </section>
 
-      <template v-slot:action="{ attrs }">
-        <v-btn text v-bind="attrs" rounded @click="snackbar = false">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </v-form>
+      <!-- SNACKBAR -->
+      <v-snackbar
+        v-if="snackBarInfos"
+        v-model="snackbar"
+        :color="snackBarInfos.status"
+        :class="`${snackbar}`"
+        shaped
+      >
+        {{ snackBarInfos.msg }}
+
+        <template v-slot:action="{ attrs }">
+          <v-btn text v-bind="attrs" rounded @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-form>
+  </v-app>
 </template>
 
 <script>
@@ -198,7 +204,7 @@ export default {
         hasNumber: /\d/.test(innerPassword),
         hasLowercase: /[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ]/.test(innerPassword),
         hasUppercase: /[A-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸ]/.test(innerPassword),
-        hasSpecial: /[!@}{[#\$%\^\&*\)\(+=._-]/.test(innerPassword),
+        hasSpecial: /[!@}{[#$%^&*)(+=._-]/.test(innerPassword),
       };
 
       for (let check in passwordVariations) {
